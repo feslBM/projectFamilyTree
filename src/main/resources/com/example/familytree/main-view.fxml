@@ -15,11 +15,6 @@
    <right>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#addFirstNode" prefHeight="41.0" prefWidth="100.0" text="Add First node">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </Button>
             <Button mnemonicParsing="false" onAction="#addRecChild" prefHeight="41.0" prefWidth="100.0" text="Add Child">
                <VBox.margin>
                   <Insets top="5.0" />
