@@ -1,7 +1,11 @@
 package com.example.familytree;
 
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -17,49 +21,63 @@ public class HelloController {
 
     ArrayList<Rectangle> nodes = new ArrayList<>();
 
-    Rectangle choice;
+    Label choice;
 
-    public void addFirstNode() {
-        Rectangle rec = createRectangle(100, 100);
-        page.getChildren().add(rec);
-        draggableMaker.makeDraggable(rec);
+    static int width = 100;
+    static int height = 100;
 
-        // Add a click event handler to allow adding child on click
-        rec.setOnMouseClicked(event -> {
-            choice = rec;
-            choice.setLayoutX(rec.getLayoutX());
-            choice.setLayoutY(rec.getLayoutY());
-        });
 
-        nodes.add(rec);
+    public void addPartner() {
     }
 
     public void addRecChild() {
+        Label label;
+        Node wife = new Node("rfef",15,Gender.MALE);
         if (choice != null) {
-            Rectangle rec = createRectangle(choice.getLayoutX(), choice.getLayoutY() + choice.getHeight() + 50);
-            page.getChildren().add(rec);
-            draggableMaker.makeDraggable(rec);
 
-            Line connectingLine = createConnectingLineChild(choice, rec);
+
+            label = wife.createRectangle(choice.getLayoutX(), choice.getLayoutY()+200);
+            page.getChildren().add(label);
+            draggableMaker.makeDraggableChildren(choice , label);
+
+            Line connectingLine = createConnectingLineChild(choice, label);
             page.getChildren().add(connectingLine);
 
 
             // Add a click event handler to allow adding child on click
-            rec.setOnMouseClicked(event -> {
-                choice = rec;
-                choice.setLayoutX(rec.getLayoutX());
-                choice.setLayoutY(rec.getLayoutY());
+            label.setOnMouseClicked(event -> {
+                choice = label;
+                choice.setLayoutX(label.getLayoutX());
+                choice.setLayoutY(label.getLayoutY());
             });
 
-            nodes.add(rec);
-        }
+        }else {
+            label = wife.createRectangle(100 , 100);
+                page.getChildren().add(label);
+                draggableMaker.makeDraggable(label);
+
+                // Add a click event handler to allow adding child on click
+                label.setOnMouseClicked(event -> {
+                    choice = label;
+                });
+            }
     }
 
     public void addRecWife() {
+
+//            Node wife = new Node("rfef",15,Gender.FEMALE);
+//            Label rec = wife.createRectangle(choice.getLayoutX() + 200, choice.getLayoutY());
+//        page.getChildren().add(rec);
+//        draggableMaker.makeDraggableWife(choice , rec);
+//
+//        PartnerShip partnerShip = new PartnerShip(choice.getLabelFor() , wife)
+
+
         if (choice != null) {
-            Rectangle rec = createRectangle(choice.getLayoutX() + choice.getWidth() + 50, choice.getLayoutY());
+            Node wife = new Node("rfef",15,Gender.FEMALE);
+            Label rec = wife.createRectangle(choice.getLayoutX() + 200, choice.getLayoutY());
             page.getChildren().add(rec);
-            draggableMaker.makeDraggable(rec);
+            draggableMaker.makeDraggableWife(choice , rec);
 
             Line connectingLine = createConnectingLineWife(choice, rec);
             page.getChildren().add(connectingLine);
@@ -67,23 +85,29 @@ public class HelloController {
             // Add a click event handler to allow adding child on click
             rec.setOnMouseClicked(event -> {
                 choice = rec;
-                choice.setLayoutX(rec.getLayoutX());
-                choice.setLayoutY(rec.getLayoutY());
             });
-
-            nodes.add(rec);
         }
     }
 
-    private Line createConnectingLineChild(Rectangle startRect, Rectangle endRect) {
-        Line line = createLine(startRect, endRect);
+    private Line createConnectingLineChild(Label startRect, Label endRect) {
+        Line line = new Line();
+        line.endXProperty().bind(endRect.layoutXProperty().add(endRect.widthProperty().divide(2)));
+        line.startXProperty().bind(startRect.layoutXProperty().add(startRect.widthProperty().divide(2)));
+
         line.startYProperty().bind(startRect.layoutYProperty().add(startRect.heightProperty()));
-        line.endYProperty().bind(endRect.layoutYProperty());
+
+        line.endYProperty().bind(Bindings.createDoubleBinding(() ->
+                        Math.max(startRect.layoutYProperty().add(startRect.heightProperty()).get(),
+                                endRect.layoutYProperty().get()),
+                startRect.layoutYProperty(), startRect.heightProperty(),
+                endRect.layoutYProperty()));
+
         return line;
     }
 
-    private Line createConnectingLineWife(Rectangle startRect, Rectangle endRect) {
-        Line line = createLine(startRect, endRect);
+
+    private Line createConnectingLineWife(Label startRect, Label endRect) {
+        Line line = new Line();
         line.startXProperty().bind(startRect.layoutXProperty().add(startRect.widthProperty()));
         line.startYProperty().bind(startRect.layoutYProperty().add(startRect.heightProperty().divide(2)));
         line.endXProperty().bind(endRect.layoutXProperty());
@@ -91,22 +115,15 @@ public class HelloController {
         return line;
     }
 
-    private Line createLine(Rectangle startRect, Rectangle endRect) {
-        Line line = new Line();
-        line.startXProperty().bind(startRect.layoutXProperty().add(startRect.widthProperty().divide(2)));
-        line.startYProperty().bind(startRect.layoutYProperty().add(startRect.heightProperty().divide(2)));
-        line.endXProperty().bind(endRect.layoutXProperty().add(endRect.widthProperty().divide(2)));
-        line.endYProperty().bind(endRect.layoutYProperty().add(endRect.heightProperty().divide(2)));
-        return line;
-    }
 
-    private Rectangle createRectangle(double x, double y) {
-        Rectangle rec = new Rectangle();
-        rec.setHeight(125);
-        rec.setWidth(125);
-        rec.setFill(Color.RED);
-        rec.setLayoutX(x);
-        rec.setLayoutY(y);
-        return rec;
-    }
+//    private Line createLine(Label startRect, Label endRect) {
+//        Line line = new Line();
+//        line.startXProperty().bind(startRect.layoutXProperty().add(startRect.widthProperty().divide(2)));
+//        line.startYProperty().bind(startRect.layoutYProperty().add(startRect.heightProperty().divide(2)));
+//        line.endXProperty().bind(endRect.layoutXProperty().add(endRect.widthProperty().divide(2)));
+//        line.endYProperty().bind(endRect.layoutYProperty().add(endRect.heightProperty().divide(2)));
+//        return line;
+//    }
+
+
 }
