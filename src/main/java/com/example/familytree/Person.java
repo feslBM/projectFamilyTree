@@ -8,6 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 
 public class Person extends Node {
@@ -15,7 +17,8 @@ public class Person extends Node {
     //this the String type for JavaFX it used for binding
     public StringProperty name = new SimpleStringProperty(this, "name");
     public int age;
-    public Boolean gender;
+    public LocalDate localdateBirth;
+    public String gender;
     public int ID;
     public ArrayList<Person> children;
     public Person partner;
@@ -46,6 +49,21 @@ public class Person extends Node {
         return arrayListNew;
     }
 
+    // constructor for Person object
+    public Person(String name, LocalDate dateOfBirth, String gender) {
+        this.name.setValue(name);
+        LocalDate currentDate = LocalDate.now();
+        Period period = Period.between(dateOfBirth, currentDate);
+        this.age = period.getYears();
+        this.localdateBirth = dateOfBirth;
+        this.gender = gender;
+        ID = numberOfPerson++;
+        if (gender == "Male"){
+            children = new ArrayList<Person>();
+        }
+        this.partner = null;
+        List.add(this);
+    }
 
     // the method for making the rectangle and binding the name in the label with the object
     public Label createRectangle(double x, double y) {
@@ -53,13 +71,14 @@ public class Person extends Node {
 
         new Label();
         Label label = new Label(this.name.getName(), rec);
+        label.setUserData(rec);
         label.textProperty().bindBidirectional(this.name);
 
         label.setContentDisplay(ContentDisplay.CENTER);
         label.setLabelFor(this);
 
-        if (this.gender) {
-            rec.setFill(Color.BLUE);
+        if (this.gender == "Male") {
+            rec.setFill(Color.LIGHTBLUE);
         } else {
             rec.setFill(Color.PINK);
         }
@@ -69,28 +88,13 @@ public class Person extends Node {
         return label;
     }
 
-
-
-    // constructor for Person object
-    public Person(String name, int age, Boolean gender) {
-        this.name.setValue(name);
-        this.age = age;
-        this.gender = gender;
-        ID = numberOfPerson++;
-        if (gender){
-            children = new ArrayList<Person>();
-        }
-        this.partner = null;
-        List.add(this);
-    }
-
     //setting partner for Node  // may be SQL statements
     public void setPartner(Person partner) {
         this.partner = partner;
         partner.partner = this;
 
         // i want the males to be always in the left
-        if (partner.gender){
+        if (partner.gender == "Male"){
             relationRowMale.add(partner.ID);
             relationRowFemale.add(this.ID);
         }else{
@@ -105,18 +109,26 @@ public class Person extends Node {
     }
 
 
+
+
     //****************************************//setters and getters//****************************************//
-    public void setGender(Boolean gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
     public void setName(String name) {
         this.name.set(name);
     }
-    public void setAge(int age) {
-        this.age = age;
+    public void setBirthday(LocalDate date) {
+        this.localdateBirth = date;
+        LocalDate currentDate = LocalDate.now();
+        Period period = Period.between(date, currentDate);
+        this.age = period.getYears();
+    }
+    public void setFatherID(int fatherID) {
+        this.fatherID = fatherID;
     }
 
-    public Boolean getGender() {
+    public String getGender() {
         return gender;
     }
 
@@ -134,52 +146,54 @@ public class Person extends Node {
         return fatherID;
     }
 
-    //***************************// Text testers methods to test the dataStructure //***************************//
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Person{");
-        sb.append("name='").append(this.name.getValue()).append("', ");
-        sb.append("age=").append(age).append(", ");
-        sb.append("male=").append(gender).append(", ");
-        sb.append("ID=").append(ID);
-
-        if (this.gender && (this.partner != null) ){
-            sb.append(", children=");
-            sb.append(this.printChildren());
-        }
-
-        sb.append("}");
-        return sb.toString();
-    }
-
-    public String printChildren() {
+    public String getChildren() {
         StringBuilder result = new StringBuilder();
         for (Person child : children){
-            result.append(child.name.getValue() + " ");
+            result.append(children.indexOf(child)+1 + "- " + child.name.getValue() + "\n");
         }
         return result.toString();
     }
 
-    public static String printFamily(int familyID) {
-        StringBuilder sb = new StringBuilder();
-        for (Person person : List) {
-            if (person.ID == familyID) {
-                for (Person child : person.children) {
-                    sb.append(child.name);
-                }
-            }
-        }
-        return sb.toString();
-    }
+    //***************************// Text testers methods to test the dataStructure //***************************//
+//    @Override
+//    public String toString() {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("Person{");
+//        sb.append("name='").append(this.name.getValue()).append("', ");
+//        sb.append("age=").append(age).append(", ");
+//        sb.append("male=").append(gender).append(", ");
+//        sb.append("ID=").append(ID);
+//
+//        if (this.gender && (this.partner != null) ){
+//            sb.append(", children=");
+//            sb.append(this.printChildren());
+//        }
+//
+//        sb.append("}");
+//        return sb.toString();
+//    }
 
-    public static String printRelationship(){
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < relationRowMale.size() ; i++) {
-            sb.append(relationRowMale.get(i) + " " + relationRowFemale.get(i) + "\n");
-        }
-        return sb.toString();
-    }
+
+//
+//    public static String printFamily(int familyID) {
+//        StringBuilder sb = new StringBuilder();
+//        for (Person person : List) {
+//            if (person.ID == familyID) {
+//                for (Person child : person.children) {
+//                    sb.append(child.name);
+//                }
+//            }
+//        }
+//        return sb.toString();
+//    }
+//
+//    public static String printRelationship(){
+//        StringBuilder sb = new StringBuilder();
+//        for (int i = 0; i < relationRowMale.size() ; i++) {
+//            sb.append(relationRowMale.get(i) + " " + relationRowFemale.get(i) + "\n");
+//        }
+//        return sb.toString();
+//    }
 
 
 
