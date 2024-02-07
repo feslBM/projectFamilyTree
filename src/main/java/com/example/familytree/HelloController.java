@@ -26,27 +26,30 @@ public class HelloController {
 
     // Radio buttons Handling
     @FXML
-    private RadioButton radioButton1;
+    private RadioButton Male;
     @FXML
-    private RadioButton radioButton2;;
+    private RadioButton Female;;
+
+    // Retrive name from textField
+    private TextField nameTextField;
 
     @FXML
     private void handleRadioButton1Action(ActionEvent event) {
-        if (radioButton1.isSelected()) {
-            radioButton2.setSelected(false);
+        if (Male.isSelected()) {
+            Female.setSelected(false);
         }
     }
     @FXML
     private void handleRadioButton2Action(ActionEvent event) {
-        if (radioButton2.isSelected()) {
-            radioButton1.setSelected(false);
+        if (Female.isSelected()) {
+            Male.setSelected(false);
         }
     }
 
     //first method to start  putting the first Person
     @FXML
     public void initialize(){
-        Person person = new Person("ME",21,true);
+        Person person = new Person("ME",21,"Male");
 
         Label label1 = person.createRectangle(200,200);
 
@@ -62,8 +65,8 @@ public class HelloController {
     //adding Children
     public void addRecChild() {
         if (choice != null) {
-            Person wife = new Person("rfef",15,true);
-
+            Person wife = new Person("rfef",15,"Male");
+            wife.insertIntoDatabase();
             Label label = wife.createRectangle(choice.getLayoutX(), choice.getLayoutY()+200);
             page.getChildren().add(label);
             draggableMaker.makeDraggableChildren(choice , label);
@@ -86,7 +89,8 @@ public class HelloController {
     //adding Wife
     public void addRecWife() {
         if (choice != null) {
-            Person wife = new Person("rfef",15,false);
+            Person wife = new Person("rfef",15,"Female");
+            wife.insertIntoDatabase();
             Label rec = wife.createRectangle(choice.getLayoutX() + 200, choice.getLayoutY());
             page.getChildren().add(rec);
             draggableMaker.makeDraggableWife(choice , rec);
@@ -137,9 +141,9 @@ public class HelloController {
 //        System.out.println(a);
 //        System.out.println(Person.printRelationship());
 
-        if (radioButton1.isSelected()){
+        if (Male.isSelected()){
             System.out.println("Male");
-        }else if (radioButton2.isSelected()){
+        }else if (Female.isSelected()){
             System.out.println("Female");
         }else {
             System.out.println("Other");

@@ -7,15 +7,19 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import java.util.ArrayList;
 
 public class Person extends Node {
 
-    //this the String type for JavaFX it used for binding
+    //this is the String type for JavaFX, it used for binding
     public StringProperty name = new SimpleStringProperty(this, "name");
     public int age;
-    public Boolean gender;
+    public String gender;
     public int ID;
     public ArrayList<Person> children;
     public Person partner;
@@ -58,8 +62,8 @@ public class Person extends Node {
         label.setContentDisplay(ContentDisplay.CENTER);
         label.setLabelFor(this);
 
-        if (this.gender) {
-            rec.setFill(Color.BLUE);
+        if (this.gender == "Male") {
+            rec.setFill(Color.LIGHTBLUE);
         } else {
             rec.setFill(Color.PINK);
         }
@@ -72,12 +76,12 @@ public class Person extends Node {
 
 
     // constructor for Person object
-    public Person(String name, int age, Boolean gender) {
+    public Person(String name, int age, String gender) {
         this.name.setValue(name);
         this.age = age;
         this.gender = gender;
         ID = numberOfPerson++;
-        if (gender){
+        if (gender == "Male"){
             children = new ArrayList<Person>();
         }
         this.partner = null;
@@ -90,7 +94,7 @@ public class Person extends Node {
         partner.partner = this;
 
         // i want the males to be always in the left
-        if (partner.gender){
+        if (partner.gender == "Male"){
             relationRowMale.add(partner.ID);
             relationRowFemale.add(this.ID);
         }else{
@@ -101,12 +105,13 @@ public class Person extends Node {
 
     // Adding Child   //here may be some SQL statement
     public void addChild(Person child) {
+
         this.children.add(child);
     }
 
 
     //****************************************//setters and getters//****************************************//
-    public void setGender(Boolean gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
     public void setName(String name) {
@@ -116,7 +121,7 @@ public class Person extends Node {
         this.age = age;
     }
 
-    public Boolean getGender() {
+    public String getGender() {
         return gender;
     }
 
@@ -144,7 +149,7 @@ public class Person extends Node {
         sb.append("male=").append(gender).append(", ");
         sb.append("ID=").append(ID);
 
-        if (this.gender && (this.partner != null) ){
+        if (this.gender == "Male" && (this.partner != null) ){
             sb.append(", children=");
             sb.append(this.printChildren());
         }
@@ -180,7 +185,39 @@ public class Person extends Node {
         }
         return sb.toString();
     }
+    // Method to insert a person record into the database
+    public void insertIntoDatabase() {
+        String sql = "INSERT INTO Person (person_id, name, gender) VALUES (?, ?, ?)";
+        // لازم تعدل على السطر اللي تحت
+        // 1- سوي DB وسميها familytreedb
+        // 2- ضيف الجداول هاذي:
+            /*
+CREATE TABLE Person (
+    person_id INT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    gender VARCHAR(10) NOT NULL
+);
 
+CREATE TABLE Marriage (
+    husband_id INT,
+    wife_id INT,
+    PRIMARY KEY (husband_id, wife_id),
+    FOREIGN KEY (husband_id) REFERENCES Person(person_id),
+    FOREIGN KEY (wife_id) REFERENCES Person(person_id)
+);
+             */
+        // 3- مكان الpassword حط الباسورد اللي حاطه لقاعدة البيانات حقتك
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/familytreedb", "root", "Qpalzmvgyt12@");
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, this.ID);
+            statement.setString(2, this.name.getValue());
+            statement.setString(3, this.gender);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
 
 
     //*********************************//    اسحب عليها
@@ -216,4 +253,4 @@ public class Person extends Node {
 //    public void setLayoutY(double layoutY) {
 //        positionRowY.set(this.ID ,layoutY);
 //    }
-}
+
