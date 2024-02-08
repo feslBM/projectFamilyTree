@@ -19,7 +19,7 @@
       <AnchorPane fx:id="page" prefHeight="600.0" prefWidth="740.0" BorderPane.alignment="CENTER" />
    </center>
    <left>
-      <AnchorPane prefHeight="600.0" prefWidth="231.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="600.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="addWifeButton" layoutX="103.0" layoutY="287.0" mnemonicParsing="false" onAction="#addRecPartner" prefHeight="26.0" prefWidth="99.0" text="Add Wife" />
             <Button fx:id="addChildButton" layoutX="4.0" layoutY="287.0" mnemonicParsing="false" onAction="#addRecChild" prefHeight="26.0" prefWidth="89.0" text="Add Child" />
@@ -35,11 +35,6 @@
                <font>
                   <Font size="14.0" />
                </font></Label>
-            <Label layoutX="45.0" layoutY="77.0" text="Family Tree">
-               <font>
-                  <Font size="28.0" />
-               </font>
-            </Label>
          </children>
       </AnchorPane>
    </left>
