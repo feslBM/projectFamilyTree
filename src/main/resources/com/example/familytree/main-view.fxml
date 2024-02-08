@@ -31,7 +31,7 @@
             <RadioButton fx:id="radioMale" layoutX="70.0" layoutY="199.0" mnemonicParsing="false" onAction="#handleRadioButton1Action" text="Male" />
             <RadioButton fx:id="radioFemale" layoutX="146.0" layoutY="199.0" mnemonicParsing="false" onAction="#handleRadioButton2Action" text="Female" />
             <Button fx:id="editButton" layoutX="85.0" layoutY="242.0" mnemonicParsing="false" onAction="#updateName" text="Edit" />
-            <Label fx:id="dataLabel" alignment="TOP_LEFT" layoutX="11.0" layoutY="413.0" prefHeight="159.0" prefWidth="183.0">
+            <Label fx:id="dataLabel" alignment="TOP_LEFT" layoutX="4.0" layoutY="326.0" prefHeight="265.0" prefWidth="196.0" wrapText="true">
                <font>
                   <Font size="14.0" />
                </font></Label>
