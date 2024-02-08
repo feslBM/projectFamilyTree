@@ -6,7 +6,7 @@ public class DatabaseConnector {
     // JDBC URL, username, and password of MySQL server
     private static final String URL = "jdbc:mysql://localhost:3306/familytreedb";
     private static final String USER = "root";
-    private static final String PASSWORD = "Qpalzmvgyt12@";
+    private static final String PASSWORD = "1234";
 
     // JDBC variables for opening, closing, and managing connection
     private static Connection connection;
@@ -57,5 +57,19 @@ public class DatabaseConnector {
         preparedStatement.setInt(1, husbandId);
         preparedStatement.setInt(2, wifeId);
         preparedStatement.executeUpdate();
+    }
+    public static void restart() throws SQLException{
+        // delete all records from table Relations
+        String queryRelationships = "DELETE FROM Relationships";
+        PreparedStatement preparedStatementRelations = connection.prepareStatement(queryRelationships);
+        preparedStatementRelations.executeUpdate();
+        // delete all records from table Marriage
+        String queryMarriage = "DELETE FROM marriage";
+        PreparedStatement preparedStatementMarriage = connection.prepareStatement(queryMarriage);
+        preparedStatementMarriage.executeUpdate();
+        // delete all records from table Person
+        String queryPerson = "DELETE FROM person";
+        PreparedStatement preparedStatementPerson = connection.prepareStatement(queryPerson);
+        preparedStatementPerson.executeUpdate();
     }
 }

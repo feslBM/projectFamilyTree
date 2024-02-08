@@ -58,19 +58,21 @@ public class HelloController {
 
     //first method to start  putting the first Person
     @FXML
-    public void initialize(){
+    public void initialize() throws SQLException {
+        try {
+            DatabaseConnector.connect(); //connect to database
+            DatabaseConnector.restart(); //restart the database
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         addChildButton.setDisable(true);
         addWifeButton.setDisable(true);
         LocalDate currentDate = LocalDate.now();
 
         Person person = new Person("Me",currentDate,"Male");
         // Add first person into person table
-        try {
-            DatabaseConnector.connect();
-            DatabaseConnector.insertPerson(person);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        DatabaseConnector.insertPerson(person);
+
         Label label = person.createRectangle(200,200);
 
         page.getChildren().add(label);
