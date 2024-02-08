@@ -78,12 +78,16 @@ public class HelloController {
         dateBox.setEditable(false);
 
         person.setFatherID(-1);
+        choice = label;
 
         // Add a click event handler to allow adding child on click
         label.setOnMouseClicked(event -> {
-            choice = label;
-
             if (isViewEnabled) {
+                ((Rectangle) choice.getUserData()).setStroke(Color.BLACK);
+                ((Rectangle) choice.getUserData()).setStrokeWidth(0);
+                choice = label;
+                ((Rectangle) choice.getUserData()).setStroke(Color.BLACK);
+                ((Rectangle) choice.getUserData()).setStrokeWidth(3);
                 dataLabel.setText(dataViewer(choice));
 
                 addChildButton.setDisable(((Person) choice.getLabelFor()).gender.equals("Female") );
@@ -91,10 +95,16 @@ public class HelloController {
                     addWifeButton.setText("Add Wife");
                     addWifeButton.setDisable(false);
                     addChildButton.setDisable(true);
+                    radioMale.setSelected(false);
+                    radioFemale.setSelected(false);
+                    radioMale.setDisable(true);
+                    radioFemale.setDisable(true);
                 } else if (((Person) choice.getLabelFor()).gender == "Male") {
                     addWifeButton.setText("Married");
                     addWifeButton.setDisable(true);
                     addChildButton.setDisable(false);
+                    radioMale.setDisable(false);
+                    radioFemale.setDisable(false);
                 }
             }
         });
@@ -129,24 +139,35 @@ public class HelloController {
             dateBox.setValue(null);
             // Add a click event handler to allow adding child on click
             label.setOnMouseClicked(event -> {
-                choice = label;
-                choice.setLayoutX(label.getLayoutX());
-                choice.setLayoutY(label.getLayoutY());
-
                 if (isViewEnabled){
+                    ((Rectangle) choice.getUserData()).setStroke(Color.BLACK);
+                    ((Rectangle) choice.getUserData()).setStrokeWidth(0);
+                    choice = label;
+                    ((Rectangle) choice.getUserData()).setStroke(Color.BLACK);
+                    ((Rectangle) choice.getUserData()).setStrokeWidth(3);
                     dataLabel.setText(dataViewer(choice));
                     if (((Person) choice.getLabelFor()).gender == "Male" && ((Person) choice.getLabelFor()).partner == null) {
                         addWifeButton.setText("Add Wife");
                         addWifeButton.setDisable(false);
                         addChildButton.setDisable(true);
+                        radioMale.setSelected(false);
+                        radioFemale.setSelected(false);
+                        radioMale.setDisable(true);
+                        radioFemale.setDisable(true);
                     } else if (((Person) choice.getLabelFor()).gender == "Male") {
                         addWifeButton.setText("Married");
                         addChildButton.setDisable(false);
+                        radioMale.setDisable(false);
+                        radioFemale.setDisable(false);
                     }
                     if (((Person) choice.getLabelFor()).gender == "Female" && ((Person) choice.getLabelFor()).partner == null) {
                         addWifeButton.setText("Add Husband");
                         addWifeButton.setDisable(false);
                         addChildButton.setDisable(true);
+                        radioMale.setSelected(false);
+                        radioFemale.setSelected(false);
+                        radioMale.setDisable(true);
+                        radioFemale.setDisable(true);
                     } else if (((Person) choice.getLabelFor()).gender == "Female") {
                         addWifeButton.setText("Married");
                         addWifeButton.setDisable(true);
@@ -201,19 +222,29 @@ public class HelloController {
             dateBox.setValue(null);
             // Add a click event handler to allow adding child on click
             rec.setOnMouseClicked(event -> {
-                choice = rec;
-
                 if (isViewEnabled) {
+                    ((Rectangle) choice.getUserData()).setStroke(Color.BLACK);
+                    ((Rectangle) choice.getUserData()).setStrokeWidth(0);
+                    choice = rec;
+                    ((Rectangle) choice.getUserData()).setStroke(Color.BLACK);
+                    ((Rectangle) choice.getUserData()).setStrokeWidth(3);
+
                     dataLabel.setText(dataViewer(choice));
                     if (((Person) choice.getLabelFor()).gender == "Male") {
                         addChildButton.setDisable(false);
                         addWifeButton.setText("Married");
                         addWifeButton.setDisable(true);
+                        radioMale.setDisable(false);
+                        radioFemale.setDisable(false);
                     }
                     if (((Person) choice.getLabelFor()).gender == "Female") {
                         addChildButton.setDisable(true);
                         addWifeButton.setText("Married");
                         addWifeButton.setDisable(true);
+                        radioMale.setSelected(false);
+                        radioFemale.setSelected(false);
+                        radioMale.setDisable(true);
+                        radioFemale.setDisable(true);
                     }
                 }
             });
@@ -262,19 +293,19 @@ public class HelloController {
     @FXML
     Button addWifeButton;
     public boolean waitingForConfirmation;
-    public Person updatingChoice;
+    public Label updatingChoice;
 
     public void updateName(){
         if (!waitingForConfirmation) {
+            updatingChoice = choice;
             // First click action
-            updatingChoice = (Person) choice.getLabelFor();
+            Person person = (Person) updatingChoice.getLabelFor();
 
-            System.out.println("Please click again to confirm");
             waitingForConfirmation = true;
 
             isViewEnabled = false;
-            textBox.setText(updatingChoice.getName());
-            dateBox.setValue(updatingChoice.localdateBirth);
+            textBox.setText(person.getName());
+            dateBox.setValue(person.localdateBirth);
             editButton.setText("confirm?");
             addChildButton.setDisable(true);
             addWifeButton.setDisable(true);
@@ -282,16 +313,38 @@ public class HelloController {
             radioFemale.setDisable(true);
         } else {
             // Second click action (confirmation)
-            System.out.println("Action confirmed");
+            Person person = (Person) updatingChoice.getLabelFor();
             waitingForConfirmation = false;
             isViewEnabled = true;
 
-            updatingChoice.setName(textBox.getText());
-            updatingChoice.setBirthday(dateBox.getValue());
+            person.setName(textBox.getText());
+            person.setBirthday(dateBox.getValue());
 
             editButton.setText("Edit");
-            radioMale.setDisable(false);
-            radioFemale.setDisable(false);
+
+
+            choice = updatingChoice;
+            radioMale.setSelected(false);
+            radioFemale.setSelected(false);
+            radioMale.setDisable(true);
+            radioFemale.setDisable(true);
+            if (((Person) choice.getLabelFor()).gender == "Male" && ((Person) choice.getLabelFor()).partner == null) {
+                addWifeButton.setText("Add Wife");
+                addWifeButton.setDisable(false);
+                addChildButton.setDisable(true);
+            } else if (((Person) choice.getLabelFor()).gender == "Male") {
+                addWifeButton.setText("Married");
+                addChildButton.setDisable(false);
+            }
+            if (((Person) choice.getLabelFor()).gender == "Female" && ((Person) choice.getLabelFor()).partner == null) {
+                addWifeButton.setText("Add Husband");
+                addWifeButton.setDisable(false);
+                addChildButton.setDisable(true);
+            } else if (((Person) choice.getLabelFor()).gender == "Female") {
+                addWifeButton.setText("Married");
+                addWifeButton.setDisable(true);
+                addChildButton.setDisable(true);
+            }
         }
 
     }

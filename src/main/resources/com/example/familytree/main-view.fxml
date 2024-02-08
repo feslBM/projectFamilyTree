@@ -21,17 +21,17 @@
    <left>
       <AnchorPane prefHeight="600.0" prefWidth="231.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="addWifeButton" layoutX="122.0" layoutY="351.0" mnemonicParsing="false" onAction="#addWife" prefHeight="26.0" prefWidth="99.0" text="Add Wife" />
-            <Button fx:id="addChildButton" layoutX="17.0" layoutY="351.0" mnemonicParsing="false" onAction="#addChild" prefHeight="26.0" prefWidth="89.0" text="Add Child" />
-            <TextField fx:id="textBox" layoutX="60.0" layoutY="178.0" prefHeight="26.0" prefWidth="146.0" />
-            <Text layoutX="17.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" textAlignment="CENTER" wrappingWidth="38.13671875" />
-            <DatePicker fx:id="dateBox" layoutX="60.0" layoutY="231.0" prefHeight="26.0" prefWidth="146.0" />
-            <Text layoutX="10.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date of Birth:" textAlignment="CENTER" wrappingWidth="51.73675584793091" />
-            <Text layoutX="12.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender:" textAlignment="CENTER" wrappingWidth="48.0" />
-            <RadioButton fx:id="radioMale" layoutX="76.0" layoutY="295.0" mnemonicParsing="false" onAction="#handleRadioButton1Action" text="Male" />
-            <RadioButton fx:id="radioFemale" layoutX="152.0" layoutY="295.0" mnemonicParsing="false" onAction="#handleRadioButton2Action" text="Female" />
-            <Button fx:id="editButton" layoutX="97.0" layoutY="400.0" mnemonicParsing="false" onAction="#updateName" text="Edit" />
-            <Label fx:id="dataLabel" alignment="TOP_LEFT" layoutX="11.0" layoutY="413.0" prefHeight="159.0" prefWidth="183.0">
+            <Button fx:id="addWifeButton" layoutX="103.0" layoutY="287.0" mnemonicParsing="false" onAction="#addRecPartner" prefHeight="26.0" prefWidth="99.0" text="Add Wife" />
+            <Button fx:id="addChildButton" layoutX="4.0" layoutY="287.0" mnemonicParsing="false" onAction="#addRecChild" prefHeight="26.0" prefWidth="89.0" text="Add Child" />
+            <TextField fx:id="textBox" layoutX="59.0" layoutY="14.0" prefHeight="26.0" prefWidth="146.0" />
+            <Text layoutX="11.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" textAlignment="CENTER" wrappingWidth="38.13671875" />
+            <DatePicker fx:id="dateBox" layoutX="59.0" layoutY="105.0" prefHeight="26.0" prefWidth="146.0" />
+            <Text layoutX="4.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date of Birth:" textAlignment="CENTER" wrappingWidth="51.73675584793091" />
+            <Text layoutX="6.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender:" textAlignment="CENTER" wrappingWidth="48.0" />
+            <RadioButton fx:id="radioMale" layoutX="70.0" layoutY="199.0" mnemonicParsing="false" onAction="#handleRadioButton1Action" text="Male" />
+            <RadioButton fx:id="radioFemale" layoutX="146.0" layoutY="199.0" mnemonicParsing="false" onAction="#handleRadioButton2Action" text="Female" />
+            <Button fx:id="editButton" layoutX="85.0" layoutY="242.0" mnemonicParsing="false" onAction="#updateName" text="Edit" />
+            <Label fx:id="dataLabel" alignment="TOP_LEFT" layoutX="4.0" layoutY="326.0" prefHeight="265.0" prefWidth="196.0" wrapText="true">
                <font>
                   <Font size="14.0" />
                </font></Label>
