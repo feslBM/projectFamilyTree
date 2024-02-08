@@ -7,7 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class HelloController {
@@ -63,8 +63,14 @@ public class HelloController {
         addWifeButton.setDisable(true);
         LocalDate currentDate = LocalDate.now();
 
-        Person person = new Person("ME",currentDate,"Male");
-
+        Person person = new Person("Me",currentDate,"Male");
+        // Add first person into person table
+        try {
+            DatabaseConnector.connect();
+            DatabaseConnector.insertPerson(person);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         Label label = person.createRectangle(200,200);
 
         page.getChildren().add(label);
@@ -84,7 +90,7 @@ public class HelloController {
                 ((Rectangle) choice.getUserData()).setStrokeWidth(3);
                 dataLabel.setText(dataViewer(choice));
 
-                addChildButton.setDisable(((Person) choice.getLabelFor()).gender == "Female");
+                addChildButton.setDisable(((Person) choice.getLabelFor()).gender.equals("Female") );
                 if (((Person) choice.getLabelFor()).gender == "Male" && ((Person) choice.getLabelFor()).partner == null) {
                     addWifeButton.setText("Add Wife");
                     addWifeButton.setDisable(false);
@@ -105,11 +111,18 @@ public class HelloController {
     }
 
     //adding Children
-    public void addRecChild(ActionEvent e) {
+    public void addChild(ActionEvent e) throws SQLException {
         String gender = genderReader();
         if (choice != null && gender != ""){
             LocalDate birthDate = dateBox.getValue();
             Person child = new Person(textBox.getText(),birthDate,gender);
+
+            //insert child into person table
+            DatabaseConnector.connect();
+            DatabaseConnector.insertPerson(child);
+
+            //insert a father and child into relationships tables
+            DatabaseConnector.insertRelationship(((Person) choice.getLabelFor()).getPersonId(), child.getPersonId());
 
             Label label = child.createRectangle(choice.getLayoutX(), choice.getLayoutY()+200);
             page.getChildren().add(label);
@@ -120,7 +133,7 @@ public class HelloController {
 
             Person father = (Person) choice.getLabelFor();
             father.addChild(child);
-            child.setFatherID(father.getID());
+            child.setFatherID(father.getPersonId());
 
             textBox.clear();
             dateBox.setValue(null);
@@ -166,7 +179,7 @@ public class HelloController {
     }
 
     //adding Wife
-    public void addRecPartner() {
+    public void addWife() throws SQLException {
         String gender;
         if (choice != null && ((Person) choice.getLabelFor()).partner == null) {
             if (((Person) choice.getLabelFor()).gender == "Male"){
@@ -174,8 +187,17 @@ public class HelloController {
             } else {
                 gender = "Male";
             }
+
             LocalDate birthDate = dateBox.getValue();
             Person wife = new Person(textBox.getText(),birthDate,gender);
+
+            DatabaseConnector.connect();
+            //insert wife into person table
+            DatabaseConnector.insertPerson(wife);
+
+            //insert wife into marriage table
+            DatabaseConnector.insertMarriage(((Person) choice.getLabelFor()).getPersonId(), wife.getPersonId());
+
             Label rec = wife.createRectangle(choice.getLayoutX() + 200, choice.getLayoutY());
             page.getChildren().add(rec);
             draggableMaker.makeDraggableWife(choice , rec);
@@ -196,7 +218,6 @@ public class HelloController {
 
                 );
             }
-
             textBox.clear();
             dateBox.setValue(null);
             // Add a click event handler to allow adding child on click
@@ -325,5 +346,6 @@ public class HelloController {
                 addChildButton.setDisable(true);
             }
         }
+
     }
 }

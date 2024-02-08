@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class Person extends Node {
     public int age;
     public LocalDate localdateBirth;
     public String gender;
-    public int ID;
+    public int personId = 1;
     public ArrayList<Person> children;
     public Person partner;
 
@@ -56,8 +57,9 @@ public class Person extends Node {
         Period period = Period.between(dateOfBirth, currentDate);
         this.age = period.getYears();
         this.localdateBirth = dateOfBirth;
+        this.personId = numberOfPerson; // Assign ID using numberOfPerson
+        numberOfPerson++; // Increment numberOfPerson for the next Person
         this.gender = gender;
-        ID = numberOfPerson++;
         if (gender == "Male"){
             children = new ArrayList<Person>();
         }
@@ -95,16 +97,17 @@ public class Person extends Node {
 
         // i want the males to be always in the left
         if (partner.gender == "Male"){
-            relationRowMale.add(partner.ID);
-            relationRowFemale.add(this.ID);
+            relationRowMale.add(partner.personId);
+            relationRowFemale.add(this.personId);
         }else{
-            relationRowMale.add(this.ID);
-            relationRowFemale.add(partner.ID);
+            relationRowMale.add(this.personId);
+            relationRowFemale.add(partner.personId);
         }
     }
 
     // Adding Child   //here may be some SQL statement
     public void addChild(Person child) {
+
         this.children.add(child);
     }
 
@@ -135,14 +138,14 @@ public class Person extends Node {
     public int getAge() {
         return age;
     }
-    public int getID(){
-        return this.ID;
+    public int getPersonId() {
+        return personId;
     }
-
     public String getName() {
         return name.get();
     }
     public int getFatherID() {
+
         return fatherID;
     }
 
@@ -153,6 +156,7 @@ public class Person extends Node {
         }
         return result.toString();
     }
+
 
     //***************************// Text testers methods to test the dataStructure //***************************//
 //    @Override
