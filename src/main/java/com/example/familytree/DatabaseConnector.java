@@ -6,6 +6,14 @@ public class DatabaseConnector {
     // JDBC URL, username, and password of MySQL server
     private static final String URL = "jdbc:mysql://localhost:3306/familytreedb";
     private static final String USER = "root";
+
+    /*
+    *
+    *
+    * Every one must set the password to the one that they use in mysql database
+    *
+    *
+    * */
     private static final String PASSWORD = "1234";
 
     // JDBC variables for opening, closing, and managing connection
@@ -43,7 +51,7 @@ public class DatabaseConnector {
 
     // Insert a relationship into the Relationships table
     public static void insertRelationship(int childId, int fatherId) throws SQLException {
-        String query = "INSERT INTO Relationships (child_id, father_id) VALUES (?, ?)";
+        String query = "INSERT INTO Relationships (children_id, father_id) VALUES (?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, childId);
         preparedStatement.setInt(2, fatherId);
