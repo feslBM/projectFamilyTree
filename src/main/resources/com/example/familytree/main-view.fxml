@@ -21,8 +21,8 @@
    <left>
       <AnchorPane prefHeight="600.0" prefWidth="231.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="addWifeButton" layoutX="103.0" layoutY="287.0" mnemonicParsing="false" onAction="#addWife" prefHeight="26.0" prefWidth="99.0" text="Add Wife" />
-            <Button fx:id="addChildButton" layoutX="4.0" layoutY="287.0" mnemonicParsing="false" onAction="#addChild" prefHeight="26.0" prefWidth="89.0" text="Add Child" />
+            <Button fx:id="addWifeButton" layoutX="124.0" layoutY="287.0" mnemonicParsing="false" onAction="#addWife" prefHeight="26.0" prefWidth="109.0" text="Add Wife" />
+            <Button fx:id="addChildButton" layoutX="4.0" layoutY="287.0" mnemonicParsing="false" onAction="#addChild" prefHeight="26.0" prefWidth="115.0" text="Add Child/Root" />
             <TextField fx:id="textBox" layoutX="59.0" layoutY="74.0" prefHeight="26.0" prefWidth="146.0" />
             <Text layoutX="11.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" textAlignment="CENTER" wrappingWidth="38.13671875" />
             <DatePicker fx:id="dateBox" layoutX="59.0" layoutY="141.0" prefHeight="26.0" prefWidth="146.0" />
@@ -30,8 +30,8 @@
             <Text layoutX="6.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender:" textAlignment="CENTER" wrappingWidth="48.0" />
             <RadioButton fx:id="radioMale" layoutX="70.0" layoutY="199.0" mnemonicParsing="false" onAction="#handleRadioButton1Action" text="Male" />
             <RadioButton fx:id="radioFemale" layoutX="146.0" layoutY="199.0" mnemonicParsing="false" onAction="#handleRadioButton2Action" text="Female" />
-            <Button fx:id="editButton" layoutX="85.0" layoutY="242.0" mnemonicParsing="false" onAction="#updateName" text="Edit" />
-            <Label fx:id="dataLabel" alignment="TOP_LEFT" layoutX="4.0" layoutY="326.0" prefHeight="265.0" prefWidth="196.0" wrapText="true">
+            <Button fx:id="editButton" layoutX="12.0" layoutY="242.0" mnemonicParsing="false" onAction="#updateName" text="Edit" />
+            <Label fx:id="dataLabel" alignment="TOP_LEFT" layoutX="17.0" layoutY="320.0" prefHeight="265.0" prefWidth="196.0" wrapText="true">
                <font>
                   <Font size="14.0" />
                </font></Label>
@@ -40,6 +40,8 @@
                   <Font size="28.0" />
                </font>
             </Label>
+            <Button layoutX="146.0" layoutY="242.0" mnemonicParsing="false" onAction="#restart" text="Reset all" />
+            <Button layoutX="81.0" layoutY="242.0" mnemonicParsing="false" onAction="#load" text="Load" />
          </children>
       </AnchorPane>
    </left>

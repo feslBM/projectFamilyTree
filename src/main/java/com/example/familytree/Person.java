@@ -8,10 +8,11 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Objects;
+
 
 public class Person extends Node {
 
@@ -28,7 +29,7 @@ public class Person extends Node {
     public int fatherID;
 
     // List of all Person objects
-    public static ArrayList<Person> List = new ArrayList<Person>();
+    public static ArrayList<Person> List = new ArrayList<>();
 
     //counter for ID
     public static int numberOfPerson = 0;
@@ -60,8 +61,8 @@ public class Person extends Node {
         this.personId = numberOfPerson; // Assign ID using numberOfPerson
         numberOfPerson++; // Increment numberOfPerson for the next Person
         this.gender = gender;
-        if (gender == "Male"){
-            children = new ArrayList<Person>();
+        if (Objects.equals(gender, "Male")){
+            children = new ArrayList<>();
         }
         this.partner = null;
         List.add(this);
@@ -79,7 +80,7 @@ public class Person extends Node {
         label.setContentDisplay(ContentDisplay.CENTER);
         label.setLabelFor(this);
 
-        if (this.gender == "Male") {
+        if (Objects.equals(this.gender, "Male")) {
             rec.setFill(Color.LIGHTBLUE);
         } else {
             rec.setFill(Color.PINK);
@@ -96,7 +97,7 @@ public class Person extends Node {
         partner.partner = this;
 
         // i want the males to be always in the left
-        if (partner.gender == "Male"){
+        if (Objects.equals(partner.gender, "Male")){
             relationRowMale.add(partner.personId);
             relationRowFemale.add(this.personId);
         }else{
@@ -107,7 +108,6 @@ public class Person extends Node {
 
     // Adding Child   //here may be some SQL statement
     public void addChild(Person child) {
-
         this.children.add(child);
     }
 
@@ -156,6 +156,96 @@ public class Person extends Node {
         }
         return result.toString();
     }
+
+//    public void reBuilder(int ID) throws SQLException {
+////        try {
+////            DatabaseConnector.connect(); //connect to database
+////        } catch (SQLException e) {
+////            e.printStackTrace();
+////        }
+//        int partnerID = -1;
+//        if (Objects.equals(this.gender, "Male")){
+//            partnerID = DatabaseConnector.getWife(this.personId);
+//        } else {
+//            partnerID = DatabaseConnector.getHusband(this.personId);
+//        }
+//
+//        Person person = new Person(DatabaseConnector.getName(ID),DatabaseConnector.getBirthDay(ID),DatabaseConnector.getGender(ID));
+//        if (person.personId == 0){
+//            person.setFatherID(-1);
+//        } else if (partnerID >= 0){
+//            person.setFatherID(-1);
+//            this.setPartner(person);
+//        } else {
+//            person.setFatherID(this.personId);
+//        }
+//        Label label = person.createRectangle(200,200);
+//
+//        HelloController.page.getChildren().add(label);
+//        HelloController.draggableMaker.makeDraggable(label);
+//        dateBox.setEditable(false);
+//
+//        choice = label;
+//
+//        textBox.clear();
+//        dateBox.setValue(null);
+//        // Add a click event handler to allow adding child on click
+//        label.setOnMouseClicked(event -> {
+//            if (HelloController.isViewEnabled){
+//                ((Rectangle) choice.getUserData()).setStroke(Color.BLACK);
+//                ((Rectangle) choice.getUserData()).setStrokeWidth(0);
+//                choice = label;
+//                ((Rectangle) choice.getUserData()).setStroke(Color.BLACK);
+//                ((Rectangle) choice.getUserData()).setStrokeWidth(3);
+//                dataLabel.setText(dataViewer(choice));
+//                if (((Person) choice.getLabelFor()).gender == "Male" && ((Person) choice.getLabelFor()).partner == null) {
+//                    addWifeButton.setText("Add Wife");
+//                    addWifeButton.setDisable(false);
+//                    addChildButton.setDisable(true);
+//                    radioMale.setSelected(false);
+//                    radioFemale.setSelected(false);
+//                    radioMale.setDisable(true);
+//                    radioFemale.setDisable(true);
+//                } else if (((Person) choice.getLabelFor()).gender == "Male") {
+//                    addWifeButton.setText("Married");
+//                    addChildButton.setDisable(false);
+//                    radioMale.setDisable(false);
+//                    radioFemale.setDisable(false);
+//                }
+//                if (Objects.equals(((Person) choice.getLabelFor()).gender, "Female") && ((Person) choice.getLabelFor()).partner == null) {
+//                    addWifeButton.setText("Add Husband");
+//                    addWifeButton.setDisable(false);
+//                    addChildButton.setDisable(true);
+//                    radioMale.setSelected(false);
+//                    radioFemale.setSelected(false);
+//                    radioMale.setDisable(true);
+//                    radioFemale.setDisable(true);
+//                } else if (Objects.equals(((Person) choice.getLabelFor()).gender, "Female")) {
+//                    addWifeButton.setText("Married");
+//                    addWifeButton.setDisable(true);
+//                    addChildButton.setDisable(true);
+//                }
+//            }
+//        });
+//
+//
+//        if (partnerID >= 0){
+//            reBuilder(partnerID);
+//            ArrayList<Integer> list = new ArrayList<Integer>();
+//            list = DatabaseConnector.getChildren(this.personId);
+//            if (list.size() > 0){
+//                for (int i = 0; i < list.size(); i++) {
+//                    reBuilder(list.get(i));
+//                }
+//            }
+//            return;
+//        }
+//
+//    }
+
+
+    }
+
 
 
     //***************************// Text testers methods to test the dataStructure //***************************//
@@ -234,4 +324,4 @@ public class Person extends Node {
 //    public void setLayoutY(double layoutY) {
 //        positionRowY.set(this.ID ,layoutY);
 //    }
-}
+

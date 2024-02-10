@@ -29,6 +29,7 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(scrollPane, 800, 600);
 
         stage.setTitle("Family Tree Application");
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }
